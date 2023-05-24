@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Real time system</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <script type="text/javascript">
+    function showResult() {
+      var styles = `
+        .result-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid #000;
+        font-family: Arial, sans-serif;
+        }
+
+      .result-table th,
+      .result-table td {
+        padding: 10px;
+        text-align: left;
+        }
+
+      .result-table th {
+        background-color: #f2f2f2;
+        border-bottom: 2px solid #ccc;
+        }
+
+      .result-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+        }
+
+      .result-table tbody tr:hover {
+        background-color: #e3e3e3;
+        }
+
+      .result-table td:first-child {
+        font-weight: bold;
+        }
+      .main-font {
+        font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+}
+      `;
+      const searchParams = new URLSearchParams(location.search);
+      if (
+        searchParams.has("mo") &&
+        searchParams.has("cr") &&
+        searchParams.has("v")
+      ) {
+        document.getElementById("result").innerHTML = `
+                <table class="result-table">
+                    <thead class="main-font">
+                        <tr><td>Металл</td><td>Значение</td></tr>
+                    </thead>
+                    <tbody class="main-font">
+                        <tr><td>Mo</td><td>${Math.round(
+                          parseFloat(searchParams.get("mo"))
+                        )}</td></tr>
+                        <tr><td>Cr</td><td>${Math.round(
+                          parseFloat(searchParams.get("cr"))
+                        )}</td></tr>
+                        <tr><td>V</td><td>${Math.round(
+                          parseFloat(searchParams.get("v"))
+                        )}</td></tr>
+                    </tbody>
+                </table>
+            `;
+        var styleElement = document.createElement("style");
+        styleElement.innerHTML = styles;
+        document.head.appendChild(styleElement);
+      }
+    }
+  </script>
+  <body onLoad="showResult();">
+    <nav class="nav-bar border">
+      <a class="nav-bar__main-a" href="#"
+        ><img class="nav-bar__main-logo" src="/static/logo.png" alt=""
+      /></a>
+      <p class="nav-text">Real time system</p>
+    </nav>
+    <div class="main-div border">
+      <h1 class="main-div__h1 main-font">
+        Онлайн-сервис для вычисления количества металлов для нужного сплава
+      </h1>
+      <div class="main-div__calculate">
+        <div class="main-div__rounded-div border">
+          <div class="main-div__h2">
+            <h2 class="main-font">
+              Выберите модель для вычисления содержания в ней оптимального
+              количества металлов Mo, Cr, V
+            </h2>
+          </div>
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="main-div__form-container"
+          >
+            <input type="file" name="file" class="main-font" />
+            <input type="submit" value="Отправить" class="main-font" />
+          </form>
+          <br />
+          <div id="result"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
